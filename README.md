@@ -1,16 +1,24 @@
-### Hi there 👋
+# CTR Prediction Models
 
-<!--
-**dustin0618/dustin0618** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+This repository contains example code for click-through rate (CTR) prediction on the Criteo dataset.
+The `ctr_prediction.py` module implements preprocessing and three models:
+logistic regression, XGBoost and DeepFM.
 
-Here are some ideas to get you started:
+## Usage
+1. Install Python packages:
+   `pandas`, `numpy`, `scikit-learn`, `xgboost` and `torch`.
+2. Place the Criteo data CSV so that the first column is the label.
+3. Example training snippet:
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+```python
+from ctr_prediction import *
+
+X, y = load_criteo('train.csv')
+X_train, X_valid, X_test, y_train, y_valid, y_test = train_val_test_split(X, y)
+X_train_h = hash_features(X_train)
+model = train_logistic_regression(X_train_h, y_train)
+auc, loss = evaluate_sklearn_model(model, hash_features(X_test), y_test)
+print('AUC', auc, 'LogLoss', loss)
+```
+
+The `train_deepfm` function trains the DeepFM model using PyTorch.
